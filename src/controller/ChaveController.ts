@@ -4,13 +4,18 @@ import {Response, Request, request} from 'express'
 
 
 export const getChaves = async ( request: Request, response: Response) => {
-    const chaves = await getRepository(Chaves).find()
+    const chaves = await getRepository(Chaves).find({relations:['usuario']})
     return response.json(chaves)
 }
 
 export const saveChave = async (request:Request, response:Response) => {
+    const novaChave = request.body
+    const chavesUsuario = await getRepository(Chaves).find(novaChave.usuario)
+    response.json(chavesUsuario)
+
+    /*
     const usuario = await getRepository(Chaves).save(request.body)
-    response.json(usuario)
+    response.json(usuario)*/
 }
 
 export const atualizarChave = async( request: Request, response: Response) =>{
