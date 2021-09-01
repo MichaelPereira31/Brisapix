@@ -1,4 +1,5 @@
-import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import { Chaves } from "./Chaves";
 
 @Entity()
 export class Usuarios{
@@ -12,10 +13,13 @@ export class Usuarios{
     @Column()
     telefone:string;
 
+    @OneToMany(type => Chaves, usurio=>Usuarios)
+    chave:Chaves;
+
     @CreateDateColumn()
     create_at:Date;
 
     @UpdateDateColumn()
-    update_ar:Date;
+    update_at:Date;
 
 }
