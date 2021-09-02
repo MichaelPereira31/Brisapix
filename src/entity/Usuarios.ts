@@ -1,5 +1,6 @@
-import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import {Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
 import { Chaves } from "./Chaves";
+import { Transferencia } from "./Transferencias";
 
 @Entity()
 export class Usuarios{
@@ -15,6 +16,13 @@ export class Usuarios{
 
     @OneToMany(type => Chaves, usurio=>Usuarios)
     chave:Chaves;
+
+    @OneToOne(type => Transferencia, usuarioEnvia=>Usuarios)
+    transferenciasEnviada:Transferencia;
+
+    @OneToOne(type => Transferencia, usuarioRecebe=>Usuarios)
+    transferenciasRecebida:Transferencia;
+    
 
     @CreateDateColumn()
     create_at:Date;

@@ -5,13 +5,35 @@ import {Response, Request, request} from 'express'
 
 export const getChaves = async ( request: Request, response: Response) => {
     const chaves = await getRepository(Chaves).find({relations:['usuario']})
+    
+    /*while(chaves.length){
+        console.log(chaves);
+      }
+    
+    
+        
+    }*/
+    for(var i in chaves){
+        console.log(chaves[i])
+    }
     return response.json(chaves)
 }
 
 export const saveChave = async (request:Request, response:Response) => {
     const novaChave = request.body
-    const chavesUsuario = await getRepository(Chaves).find(novaChave.usuario)
-    response.json(chavesUsuario)
+    var j = novaChave["usuario"]
+    const chavesUsuario = await getRepository(Chaves).find({relations:['usuario']})
+    //console.log(chavesUsuario[0]['usuario']["id"])
+    
+    for(var i in chavesUsuario){
+        var k = chavesUsuario[i]['usuario']["id"]
+        if(k == j){
+            console.log("teste")
+        }
+        
+    }
+    
+    response.json({message:"ok"})
 
     /*
     const usuario = await getRepository(Chaves).save(request.body)
