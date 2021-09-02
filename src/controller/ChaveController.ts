@@ -1,35 +1,27 @@
 import { getRepository} from 'typeorm'
 import {Chaves} from '../entity/Chaves'
-import {Response, Request, request} from 'express'
+import {Response, Request} from 'express'
 
 
-export const getChaves = async ( request: Request, response: Response) => {
+export const pegarChaves = async ( request: Request, response: Response) => {
     const chaves = await getRepository(Chaves).find({relations:['usuario']})
     return response.json(chaves)
 }
 
-export const saveChave = async (request:Request, response:Response) => {
+export const salvarChave = async (request:Request, response:Response) => {
     const novaChave = request.body
-    console.log(novaChave["usuario"]['id'])
     const chavesUsuario = await getRepository(Chaves).find({relations:['usuario']})
-    //console.log(chavesUsuario[0]['usuario']["id"])
-    var n = 0
     
-    while(n <= chavesUsuario.length){
-        if(chavesUsuario[n]['usuario']['id'] == novaChave["usuario"]['id']){
-            console.log("ok")
-        }
-        n++
-    }/*
-    for(var i in chavesUsuario){
-        console.log(chavesUsuario[i]['usuario']['id'])
-    }*/
+    const qtdeId = chavesUsuario.filter((chave) =>{
+        return chave.usuario.id === novaChave.usuario.id
+    }).length
     
-    response.json({message:"ok"})
-/*
-    
-    const usuario = await getRepository(Chaves).save(request.body)
-    response.json(usuario)*/
+    if(qtdeId < 3){
+        const usuario = await getRepository(Chaves).save(request.body)
+        response.json(usuario)
+    }else{
+        response.json({message:"Voce atingiu limite máximo de chvaes"})
+    }
 }
 
 export const atualizarChave = async( request: Request, response: Response) =>{

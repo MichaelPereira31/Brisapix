@@ -10,7 +10,7 @@ export class Chaves{
     @Column({unique: true})
     chave:string;
 
-    @ManyToOne(type => Usuarios, chave=>Chaves)
+    @ManyToOne(type => Usuarios, chave=>Chaves,{ onUpdate: 'CASCADE' })
     usuario:Usuarios;
 
     @CreateDateColumn()
